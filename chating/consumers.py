@@ -9,10 +9,10 @@ from .models import Thread, ChatMessage
 class ChatConsumer(AsyncConsumer):
     async def websocket_connect(self, event):
         print("connected", event)
-        print(self.scope)
+        # print(self.scope)
         other_user = self.scope['url_route']['kwargs']['username']
         me = self.scope['user']
-        print(me)
+        # print(me)
         thread_obj = await self.get_thread(me, other_user)
         self.thread_obj = thread_obj
         chat_room = f"thread_{thread_obj.id}"
@@ -29,9 +29,11 @@ class ChatConsumer(AsyncConsumer):
     async def websocket_receive(self, event):
         print("receive", event)
         front_text = event.get('text', None)
+
         if front_text  is not None:
-            loaded_dict_data = json.loads(front_text)
-            msg = loaded_dict_data.get('message')
+            # loaded_dict_data = json.loads(front_text)
+            # msg = loaded_dict_data.get('message')
+            msg = front_text
             user = self.scope['user']
             username = 'default'
 
