@@ -12,6 +12,7 @@ class ChatConsumer(AsyncConsumer):
         print(self.scope)
         other_user = self.scope['url_route']['kwargs']['username']
         me = self.scope['user']
+        print(me)
         thread_obj = await self.get_thread(me, other_user)
         self.thread_obj = thread_obj
         chat_room = f"thread_{thread_obj.id}"

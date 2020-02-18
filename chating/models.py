@@ -14,7 +14,7 @@ class ThreadManager(models.Manager):
 
     def get_or_new(self, user, other_username): # get_or_create
         # username = user.username
-        username=user.name
+        username=user.username
         print(user, other_username)
         if username == other_username:
             return None
