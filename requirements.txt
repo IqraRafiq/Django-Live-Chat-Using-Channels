@@ -1,0 +1,6 @@
+Django>=2.2.3,<2.3.0
+djangorestframework>=3.10.3,<3.11.0
+pytz>=2018.5
+redis>=2.10.6
+channels==2.4.0
+channels-redis==2.4.1
