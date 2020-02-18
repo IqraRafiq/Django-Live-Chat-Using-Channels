@@ -14,6 +14,7 @@ class TokenAuthMiddleware:
 
     def __call__(self, scope):
         headers = dict(scope['headers'])
+        print(headers)
         if b'authorization' in headers:
             try:
                 token_name, token_key = headers[b'authorization'].decode().split()

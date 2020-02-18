@@ -8,18 +8,15 @@ class ThreadManager(models.Manager):
     def by_user(self, user):
         qlookup = Q(first=user) | Q(second=user)
         qlookup2 = Q(first=user) & Q(second=user)
-        print(qlookup, qlookup2)
         qs = self.get_queryset().filter(qlookup).exclude(qlookup2).distinct()
         return qs
 
     def get_or_new(self, user, other_username): # get_or_create
-        # username = user.username
-        username=user.username
-        print(user, other_username)
+        username = user.username
         if username == other_username:
             return None
-        qlookup1 = Q(first__name=username) & Q(second__name=other_username)
-        qlookup2 = Q(first__name=other_username) & Q(second__name=username)
+        qlookup1 = Q(first__username=username) & Q(second__username=other_username)
+        qlookup2 = Q(first__username=other_username) & Q(second__username=username)
         qs = self.get_queryset().filter(qlookup1 | qlookup2).distinct()
         if qs.count() == 1:
             return qs.first(), False
@@ -27,14 +24,14 @@ class ThreadManager(models.Manager):
             return qs.order_by('timestamp').first(), False
         else:
             Klass = user.__class__
-            user2 = Klass.objects.get(name=other_username)
+            user2 = Klass.objects.get(username=other_username)
             if user != user2:
                 obj = self.model(
                         first=user, 
                         second=user2
                     )
                 obj.save()
-                return obj.__dict__, True
+                return obj, True
             return None, False
 
 
@@ -62,6 +59,3 @@ class ChatMessage(models.Model):
     user        = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='sender', on_delete=models.CASCADE)
     message     = models.TextField()
     timestamp   = models.DateTimeField(auto_now_add=True)
-    def __str__(self):
-        """Return string representation of our user"""
-        return str(self.message)
